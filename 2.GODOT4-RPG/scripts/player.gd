@@ -121,12 +121,17 @@ func _on_attack_cooldown_timeout():
 
 func _on_line_edit_text_submitted(new_text):
 	print("Text entered on submitted: ", new_text)
-
 	# assuming the NPC node is named "NPC" and is a sibling of the current node
-	get_node("/root/world/Npc/Area2D").send_request(new_text)	
+	get_node("/root/world/Npc/action_area").send_request(new_text)	
+	get_node("/root/world/Npc2/action_area").send_request(new_text)	
+	get_node("/root/world/Npc3/action_area").send_request(new_text)	
+	get_node("/root/world/Npc4/action_area").send_request(new_text)				
 
 	
 func _on_text_entered(new_text):
 	print("Text entered: ", new_text)
 	# assuming the NPC node is named "NPC" and is a sibling of the current node
-	get_node("/root/world/Npc/Area2D").send_request(new_text)	
+	get_node("/root/world/Npc/action_area").send_request(new_text)	
+	get_node("/root/world/Npc2/action_area").send_request(new_text)	
+	get_node("/root/world/Npc3/action_area").send_request(new_text)	
+	get_node("/root/world/Npc4/action_area").send_request(new_text)		

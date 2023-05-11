@@ -8,7 +8,7 @@ enum modes {
 	Help
 }
 
-var api_key = "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"
+var api_key = ""
 var max_tokens = 1024
 var temperature = 0.5
 var url = "https://api.openai.com/v1/completions"

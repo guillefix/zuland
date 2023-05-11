@@ -1,4 +1,4 @@
-[gd_scene load_steps=60 format=3 uid="uid://dd6vcyj08nswx"]
+[gd_scene load_steps=61 format=3 uid="uid://dd6vcyj08nswx"]
 
 [ext_resource type="Texture2D" uid="uid://7uk00fnhc8gp" path="res://art/characters/player.png" id="1_a5ny3"]
 [ext_resource type="Script" path="res://scenes/npc.gd" id="1_sbtr7"]
@@ -7,7 +7,7 @@
 [ext_resource type="Script" path="res://scenes/npc_dialogue.gd" id="5_rwpel"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_b8576"]
-radius = 6.0
+radius = 10.0499
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_aun1k"]
 atlas = ExtResource("1_a5ny3")
@@ -420,16 +420,20 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1ie0m"]
-size = Vector2(41, 41)
+size = Vector2(46.5, 42.25)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1ciub"]
+size = Vector2(74.75, 63.5)
 
 [node name="Npc" type="CharacterBody2D"]
-collision_layer = 16
-collision_mask = 2
+collision_layer = 30
+collision_mask = 30
 script = ExtResource("1_sbtr7")
 
 [node name="Dialogue" parent="." instance=ExtResource("2_8s5rd")]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(28, 15)
 shape = SubResource("CircleShape2D_b8576")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
@@ -438,22 +442,32 @@ sprite_frames = SubResource("SpriteFrames_pvsxf")
 animation = &"death"
 script = ExtResource("2_egreu")
 
-[node name="Area2D" type="Area2D" parent="."]
-collision_layer = 16
-collision_mask = 2
+[node name="action_area" type="Area2D" parent="."]
+collision_layer = 6
+collision_mask = 6
 script = ExtResource("5_rwpel")
 
-[node name="HTTPRequest" type="HTTPRequest" parent="Area2D"]
+[node name="HTTPRequest" type="HTTPRequest" parent="action_area"]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-position = Vector2(28.5, 15.5)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="action_area"]
+position = Vector2(28, 17)
 shape = SubResource("RectangleShape2D_1ie0m")
 
 [node name="walk_timer" type="Timer" parent="."]
 wait_time = 0.5
 
-[connection signal="body_exited" from="Area2D" to="." method="_on_area_2d_body_exited"]
-[connection signal="body_exited" from="Area2D" to="Area2D" method="_on_body_exited"]
-[connection signal="request_completed" from="Area2D/HTTPRequest" to="." method="_on_http_request_request_completed"]
+[node name="detection_area" type="Area2D" parent="."]
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="detection_area"]
+position = Vector2(27, 16)
+shape = SubResource("RectangleShape2D_1ciub")
+
+[connection signal="body_exited" from="action_area" to="." method="_on_area_2d_body_exited"]
+[connection signal="body_exited" from="action_area" to="action_area" method="_on_body_exited"]
+[connection signal="request_completed" from="action_area/HTTPRequest" to="." method="_on_http_request_request_completed"]
 [connection signal="timeout" from="walk_timer" to="." method="_on_walk_timer_timeout"]
 [connection signal="timeout" from="walk_timer" to="." method="_on_timer_timeout"]
+[connection signal="body_entered" from="detection_area" to="." method="_on_detection_area_body_entered"]
+[connection signal="body_exited" from="detection_area" to="." method="_on_detection_area_body_exited"]

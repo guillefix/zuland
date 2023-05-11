@@ -154,15 +154,27 @@ position = Vector2(22, 60)
 position = Vector2(122, 65)
 
 [node name="Npc" parent="." instance=ExtResource("6_w35qe")]
-position = Vector2(9, 57)
+position = Vector2(19, 108)
 
 [node name="Npc2" parent="." instance=ExtResource("6_w35qe")]
 position = Vector2(199, 63)
+
+[node name="Npc3" parent="." instance=ExtResource("6_w35qe")]
+position = Vector2(245, 114)
+
+[node name="Npc4" parent="." instance=ExtResource("6_w35qe")]
+position = Vector2(235, 18)
+collision_layer = 2
+collision_mask = 14
 
 [node name="LineEdit" type="LineEdit" parent="."]
 offset_left = 2.0
 offset_top = 132.0
 offset_right = 284.0
 offset_bottom = 163.0
+
+[node name="Artesan" type="CharacterBody2D" parent="."]
+
+[node name="Shopkeeper" type="CharacterBody2D" parent="."]
 
 [connection signal="text_submitted" from="LineEdit" to="player" method="_on_line_edit_text_submitted"]
