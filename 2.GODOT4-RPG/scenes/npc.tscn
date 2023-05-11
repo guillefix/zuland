@@ -467,7 +467,7 @@ shape = SubResource("RectangleShape2D_1ciub")
 [connection signal="body_exited" from="action_area" to="." method="_on_area_2d_body_exited"]
 [connection signal="body_exited" from="action_area" to="action_area" method="_on_body_exited"]
 [connection signal="request_completed" from="action_area/HTTPRequest" to="." method="_on_http_request_request_completed"]
-[connection signal="timeout" from="walk_timer" to="." method="_on_walk_timer_timeout"]
 [connection signal="timeout" from="walk_timer" to="." method="_on_timer_timeout"]
+[connection signal="timeout" from="walk_timer" to="." method="_on_walk_timer_timeout"]
 [connection signal="body_entered" from="detection_area" to="." method="_on_detection_area_body_entered"]
 [connection signal="body_exited" from="detection_area" to="." method="_on_detection_area_body_exited"]

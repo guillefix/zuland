@@ -75,41 +75,25 @@ func _on_request_completed(result, response_code, headers, body):
 	#print("RESPONSE 2", response.direction)
 	#print("RESPONSE 3", response.where)
 	var npc_names = ["Alice", "Bob", "Charlie","Shoopkeeper"]
-	var npc_codex = ["npc", "npc2", "npc3", "npc4"]
+	var npc_codex = ["Npc", "Npc2", "Npc3", "Npc4"]
 	if response.action.type == "walkTo":
 		current_action = "walking"
-		if response.action.where == "npc1":
-			print("walking to npc1")
-			self.get_parent().walk_towards_npc1()
-			self.send_request("Just walked to npc1")
-		elif response.action.where == "npc2":
-			print("walking to npc2")
-			self.get_parent().walk_towards_npc2()			
-			self.send_request("Just walked to npc2")
-		elif response.action.where == "npc3":
-			print("walking to npc3")
-			self.get_parent().walk_towards_npc3()
-			self.send_request("Just walked to npc3")
-		elif response.action.where == "npc4":
-			print("walking to npc4")	
-			self.get_parent().walk_towards_npc4()
-			self.send_request("Just walked to npc4")			
+		var npc_name = response.action.where
+		print("walking to "+npc_name)
+		self.get_parent().walk_towards_npc(npc_name)
+		self.send_request("Just walked to "+npc_name)	
+				
 	elif response.action.type == "wait":
 		print("WAITING")
-		self.send_request("Just Waited")						
+		self.send_request("Just Waited")
+								
 	elif response.action.type == "move":
-		if response.action.direction == "right":
-			self.get_parent().npc_movement("move-right")
-			self.send_request("Just moved right")			
-		elif response.action.direction == "left":
-			self.get_parent().npc_movement("move-left")
-			self.send_request("Just moved left")						
-		elif response.action.direction == "up":
-			self.get_parent().npc_movement("move-up")
-			self.send_request("Just moved up")						
-		elif response.action.direction == "down":
-			self.get_parent().npc_movement("move-down")
-			self.send_request("Just moved down")						
+		var direction = response.action.direction
+		self.get_parent().npc_movement("move-"+direction)
+		self.send_request("Just moved "+direction)			
+			
+	elif response.action.type == "talkTo":
+			self.get_parent().talk_to_npc(response.action.where, response.action.talking)
 	
 	
 	
@@ -144,13 +128,13 @@ func _on_body_exited(body):
 
 		
 
-func start_conversation(prompt :String):
-	print("start conversation with prompt:", prompt)
+func start_conversation(from_npc: String, prompt :String):
+	print("start conversation with prompt: ", prompt)
 	dialogue.start("Dan")
-	send_request(prompt)
+	send_request(from_npc + " said: " + prompt)	
 		
 func respond_to_conversation(prompt :String):
-	print("start conversation with prompt:", prompt)
+	print("start conversation with prompt: ", prompt)
 	dialogue.start("Dan")
 	send_request(prompt)
 	#if is_conversation:

@@ -19,6 +19,10 @@ config/icon="res://icon.svg"
 
 window/stretch/scale=4.0
 
+[dotnet]
+
+project/assembly_name="2.GODOT4-RPG"
+
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/GPTIntegration/plugin.cfg")

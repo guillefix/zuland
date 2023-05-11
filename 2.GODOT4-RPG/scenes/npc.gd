@@ -25,6 +25,8 @@ var npc_lists = []
 var walking_towards = "none"
 var current_dir = null
 
+var npcs = {}
+
 func _ready():
 	add_child(httpRequest)
 	dialogue_box = get_node("Dialogue")
@@ -36,6 +38,12 @@ func _ready():
 	area = $action_area
 	area.send_request("start game")
 	$walk_timer.start()  # start the timer
+	npcs = {
+		"Npc1": npc,
+		"Npc2": npc2,
+		"Npc3": npc3,
+		"Npc4": npc4
+	}
 
 
 func _physics_process(delta):
@@ -45,14 +53,9 @@ func _physics_process(delta):
 	#elif is_walking_towards_npc:
 		#walk_towards_npc(walking_towards)
 
-	if walking_towards == "npc1":
-		walk_towards_npc1()
-	elif walking_towards == "npc2":
-		walk_towards_npc2()
-	elif walking_towards == "npc3":
-		walk_towards_npc3()
-	elif walking_towards == "npc4":
-		walk_towards_npc4()
+	if walking_towards != "none":
+		walk_towards_npc(walking_towards)
+
 		
 		
 	#move_and_slide()
@@ -81,36 +84,16 @@ func _on_walk_timer_timeout():
 	# Generate a new random direction
 	#direction = Vector2(randf_range(-1.0, 1.0), randf_range(-1.0, 1.0)).normalized()/10
 	
-func walk_towards_npc():
-	if npc != null and global_position.distance_to(npc.global_position) > conversation_distance_threshold:
-		position += (npc.position - position)/100
-		walking_towards = "npc"
-	#elif is_conversation:
-		#direction = Vector2.ZERO
-		#print("starting conversation after walk")
-		#npc2_area.start_conversation("Hi, whats your name?")
-		#is_conversation = false
-func walk_towards_npc1():
+
+func walk_towards_npc(npc_name):
+	npc = npcs[npc_name]
 	if npc != null and global_position.distance_to(npc.global_position) > conversation_distance_threshold:
 		position += (npc.position - position)/200
-		walking_towards = "npc1"
-		
+		walking_towards = npc_name
 
-func walk_towards_npc2():
-	if npc2 != null and global_position.distance_to(npc2.global_position) > conversation_distance_threshold:
-		position += (npc2.position - position)/200
-		walking_towards = "npc2"
-		
-func walk_towards_npc3():
-	if npc3 != null and global_position.distance_to(npc3.global_position) > conversation_distance_threshold:
-		position += (npc3.position - position)/200
-		walking_towards = "npc3"
-
-func walk_towards_npc4():
-	if npc4 != null and global_position.distance_to(npc4.global_position) > conversation_distance_threshold:
-		position += (npc4.position - position)/200
-		walking_towards = "npc4"
-
+func talk_to_npc(to_npc_name, message):
+	npc = npcs[to_npc_name]
+	npc.get_node("action_area").start_conversation(self.name, message)
 
 func _on_detection_area_body_entered(body):
 	if body.name != self.name:
