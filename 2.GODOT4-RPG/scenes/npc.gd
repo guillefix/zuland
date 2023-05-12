@@ -32,6 +32,8 @@ var current_dir = null
 var locations = {}
 var location = null
 
+var panel = null
+
 
 func _ready():
 	add_child(httpRequest)
@@ -41,11 +43,13 @@ func _ready():
 	npc2 = get_node("/root/world/Npc2")  #
 	npc3 = get_node("/root/world/Npc3")  #	
 	npc4= get_node("/root/world/Npc4")  #	
-	building1 = get_node("/root/world/Npc")  #	
-	building2 = get_node("/root/world/Npc2")  #
-	building3 = get_node("/root/world/Npc3")  #	
-	building4= get_node("/root/world/Npc4")  #	
+	building1 = get_node("/root/world/Building1")  #	
+	building2 = get_node("/root/world/Building2")  #
+	building3 = get_node("/root/world/Building3")  #	
+	building4= get_node("/root/world/Building4")  #	
 	area = $action_area
+	panel = $Panel
+	panel.visible = false
 	#Create a mapping between "npcs" and "prompts"
 	area.send_request("start game")
 	$walk_timer.start()  # start the timer
@@ -103,7 +107,6 @@ func _on_walk_timer_timeout():
 func walk_towards_npc(npc_name):
 	location = locations[npc_name]
 	if location != null:
-		print("Location " + location + " and Walking towards " + npc_name)
 		position += (location.position - position)/200
 		walking_towards = npc_name
 
@@ -156,3 +159,10 @@ func npc_movement(dir):
 		velocity.x = 0
 		velocity.y = 0
 	move_and_slide()
+	
+func change_panel_text(info : String):
+	panel.visible = true
+	panel.get_node("panel_text").text = info
+	
+func change_emotion(emotion : String):
+	$emotion.text = emotion
