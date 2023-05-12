@@ -66,6 +66,7 @@ func send_request(user_input: String):
 
 
 func _on_request_completed(result, response_code, headers, body):
+	#If Nill or null just wait*
 	#var json = JSON.parse_string(body.get_string_from_utf8()
 	var response = JSON.parse_string(str_to_var(body.get_string_from_utf8()))
 	#var text = response["choices"][0]["text"].strip_edges()

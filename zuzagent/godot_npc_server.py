@@ -31,12 +31,20 @@ class AIAgent:
 
             * Move (up, down, left, right)
             * Wait
-            * walkTo (Npc1, Npc2, Npc3 , Npc4)
-            * talkTo (Npc1, Npc2, Npc3 , Npc4) - (Make sure you only talk to those who are nearby)
+            * walkTo (Make sure you only talk to those who are nearby)
+            * talkTo (Make sure you only talk to those who are nearby)
 
             # Responses
 
             You must supply your responses in the form of valid JSON objects.  Your responses will specify which of the above actions you intend to take.  The following is an example of a valid response:
+
+            *type: Type of action to take.  Valid values are: move, wait, walkTo, talkTo
+            *direction: Only for type "move"
+            *where: Only for type "walkTo" , "talkTo". Valid values are: Building1, Building2, Building3, Building4, Npc1, Npc2, Npc3 , Npc4
+            *thought: For all types, the reason why you are doing this action
+            *talking: Only for type "talkTo", what you are saying to the other person
+            *Relationship: Only for type "talkTo", what is your relationship with the other person
+            *Feeling: For all types, how you feel about the action you are taking
 
             {{
             "action": {{
@@ -133,7 +141,7 @@ class AIAgent:
         messages_input.insert(0, prompt[0])
 
         completion = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",
+            model="gpt-4",
             temperature=temperature,
             frequency_penalty=frequency_penalty,
             presence_penalty=presence_penalty,
@@ -179,7 +187,7 @@ def get_chat_response():
 
     response = chatbot.interact(data)
     # action = extract_action_from_response(response)  # You'd need to implement this function
-    print("Response: "+ response)
+    #print("Response: "+ response)
     # print(jsonify(response).action)
     return jsonify(response)
 

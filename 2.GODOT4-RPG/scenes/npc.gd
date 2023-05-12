@@ -6,10 +6,14 @@ var json = JSON.new()
 var direction = Vector2()
 var enemy = null
 var target = null
-var npc = null
+var npc1 = null
 var npc2 = null
 var npc3 = null
 var npc4 = null
+var building1 = null
+var building2 = null
+var building3 = null
+var building4 = null
 var npc2_area = null
 var is_conversation = true
 var area = null
@@ -25,24 +29,35 @@ var npc_lists = []
 var walking_towards = "none"
 var current_dir = null
 
-var npcs = {}
+var locations = {}
+var location = null
+
 
 func _ready():
 	add_child(httpRequest)
 	dialogue_box = get_node("Dialogue")
 	enemy = get_node("/root/world/enemy")
-	npc = get_node("/root/world/Npc")  #	
+	npc1 = get_node("/root/world/Npc1")  #	
 	npc2 = get_node("/root/world/Npc2")  #
 	npc3 = get_node("/root/world/Npc3")  #	
-	npc4= get_node("/root/world/Npc4")  #		
+	npc4= get_node("/root/world/Npc4")  #	
+	building1 = get_node("/root/world/Npc")  #	
+	building2 = get_node("/root/world/Npc2")  #
+	building3 = get_node("/root/world/Npc3")  #	
+	building4= get_node("/root/world/Npc4")  #	
 	area = $action_area
+	#Create a mapping between "npcs" and "prompts"
 	area.send_request("start game")
 	$walk_timer.start()  # start the timer
-	npcs = {
-		"Npc1": npc,
+	locations = {
+		"Npc1": npc1,
 		"Npc2": npc2,
 		"Npc3": npc3,
-		"Npc4": npc4
+		"Npc4": npc4,
+		"Building1": building1,
+		"Building2": building2,
+		"Building3": building3,
+		"Building4": building4
 	}
 
 
@@ -86,14 +101,16 @@ func _on_walk_timer_timeout():
 	
 
 func walk_towards_npc(npc_name):
-	npc = npcs[npc_name]
-	if npc != null and global_position.distance_to(npc.global_position) > conversation_distance_threshold:
-		position += (npc.position - position)/200
+	location = locations[npc_name]
+	if location != null:
+		print("Location " + location + " and Walking towards " + npc_name)
+		position += (location.position - position)/200
 		walking_towards = npc_name
 
 func talk_to_npc(to_npc_name, message):
-	npc = npcs[to_npc_name]
-	npc.get_node("action_area").start_conversation(self.name, message)
+	location = locations[to_npc_name]
+	if location != null and global_position.distance_to(location.global_position) > conversation_distance_threshold:	
+		location.get_node("action_area").start_conversation(self.name, message)
 
 func _on_detection_area_body_entered(body):
 	if body.name != self.name:
