@@ -1,8 +1,7 @@
-[gd_scene load_steps=61 format=3 uid="uid://dd6vcyj08nswx"]
+[gd_scene load_steps=60 format=3 uid="uid://dd6vcyj08nswx"]
 
 [ext_resource type="Texture2D" uid="uid://7uk00fnhc8gp" path="res://art/characters/player.png" id="1_a5ny3"]
 [ext_resource type="Script" path="res://scenes/npc.gd" id="1_sbtr7"]
-[ext_resource type="PackedScene" uid="uid://l7wey7fu66gx" path="res://dialogues/dialogue.tscn" id="2_8s5rd"]
 [ext_resource type="Script" path="res://scenes/AnimatedSprite2D.gd" id="2_egreu"]
 [ext_resource type="Script" path="res://scenes/npc_dialogue.gd" id="5_rwpel"]
 
@@ -430,8 +429,6 @@ collision_layer = 30
 collision_mask = 30
 script = ExtResource("1_sbtr7")
 
-[node name="Dialogue" parent="." instance=ExtResource("2_8s5rd")]
-
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(28, 15)
 shape = SubResource("CircleShape2D_b8576")
@@ -464,10 +461,34 @@ collision_mask = 2
 position = Vector2(27, 16)
 shape = SubResource("RectangleShape2D_1ciub")
 
+[node name="emotion" type="RichTextLabel" parent="."]
+offset_left = 22.0
+offset_top = 32.0
+offset_right = 34.0
+offset_bottom = 51.0
+theme_override_font_sizes/normal_font_size = 10
+text = "
+"
+
+[node name="Panel" type="Panel" parent="."]
+offset_left = -5.0
+offset_top = -36.0
+offset_right = 69.0
+offset_bottom = 3.0
+
+[node name="panel_text" type="RichTextLabel" parent="Panel"]
+layout_mode = 0
+offset_left = 3.0
+offset_top = 1.0
+offset_right = 72.0
+offset_bottom = 38.0
+theme_override_font_sizes/normal_font_size = 5
+tab_size = 1
+
 [connection signal="body_exited" from="action_area" to="." method="_on_area_2d_body_exited"]
 [connection signal="body_exited" from="action_area" to="action_area" method="_on_body_exited"]
 [connection signal="request_completed" from="action_area/HTTPRequest" to="." method="_on_http_request_request_completed"]
-[connection signal="timeout" from="walk_timer" to="." method="_on_timer_timeout"]
 [connection signal="timeout" from="walk_timer" to="." method="_on_walk_timer_timeout"]
+[connection signal="timeout" from="walk_timer" to="." method="_on_timer_timeout"]
 [connection signal="body_entered" from="detection_area" to="." method="_on_detection_area_body_entered"]
 [connection signal="body_exited" from="detection_area" to="." method="_on_detection_area_body_exited"]
