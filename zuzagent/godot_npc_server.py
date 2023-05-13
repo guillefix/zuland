@@ -144,7 +144,7 @@ class AIAgent:
         messages_input.insert(0, prompt[0])
 
         completion = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",
+            model="gpt-4",
             temperature=temperature,
             frequency_penalty=frequency_penalty,
             presence_penalty=presence_penalty,
@@ -192,7 +192,7 @@ def get_chat_response():
     response = chatbot.interact(data)
     # action = extract_action_from_response(response)  # You'd need to implement this function
     #print("Response: "+ response)
-    # print(jsonify(response).action)
+    print(response)
     return jsonify(response)
 
 
