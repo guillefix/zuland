@@ -6,14 +6,8 @@ var json = JSON.new()
 var direction = Vector2()
 var enemy = null
 var target = null
-var npc1 = null
-var npc2 = null
-var npc3 = null
-var npc4 = null
-var building1 = null
-var building2 = null
-var building3 = null
-var building4 = null
+var npcs = null
+var buildings = null
 var npc2_area = null
 var is_conversation = true
 var area = null
@@ -31,34 +25,27 @@ var current_dir = null
 
 var locations = {}
 var location = null
+var description = ""
 
 
 func _ready():
 	add_child(httpRequest)
 	dialogue_box = get_node("Dialogue")
-	enemy = get_node("/root/world/enemy")
-	npc1 = get_node("/root/world/Npc1")  #	
-	npc2 = get_node("/root/world/Npc2")  #
-	npc3 = get_node("/root/world/Npc3")  #	
-	npc4= get_node("/root/world/Npc4")  #	
-	building1 = get_node("/root/world/Npc")  #	
-	building2 = get_node("/root/world/Npc2")  #
-	building3 = get_node("/root/world/Npc3")  #	
-	building4= get_node("/root/world/Npc4")  #	
+#	enemy = get_node("/root/world/enemy")
+	npcs = get_node("/root/world/Characters").get_children()
+
+	buildings = get_node("/root/world/Buildings").get_children()
 	area = $action_area
 	#Create a mapping between "npcs" and "prompts"
+#	var initial_prompt = map[self.name]
+
 	area.send_request("start game")
 	$walk_timer.start()  # start the timer
-	locations = {
-		"Npc1": npc1,
-		"Npc2": npc2,
-		"Npc3": npc3,
-		"Npc4": npc4,
-		"Building1": building1,
-		"Building2": building2,
-		"Building3": building3,
-		"Building4": building4
-	}
+	locations = {}
+	for npc in npcs:
+		locations[npc.name] = npc
+	for building in buildings:
+		locations[building.name] = building
 
 
 func _physics_process(delta):
@@ -69,7 +56,7 @@ func _physics_process(delta):
 		#walk_towards_npc(walking_towards)
 
 	if walking_towards != "none":
-		walk_towards_npc(walking_towards)
+		walk_towards(walking_towards)
 
 		
 		
@@ -100,12 +87,11 @@ func _on_walk_timer_timeout():
 	#direction = Vector2(randf_range(-1.0, 1.0), randf_range(-1.0, 1.0)).normalized()/10
 	
 
-func walk_towards_npc(npc_name):
-	location = locations[npc_name]
+func walk_towards(location_name):
+	location = locations[location_name]
 	if location != null:
-		print("Location " + location + " and Walking towards " + npc_name)
 		position += (location.position - position)/200
-		walking_towards = npc_name
+		walking_towards = location_name
 
 func talk_to_npc(to_npc_name, message):
 	location = locations[to_npc_name]

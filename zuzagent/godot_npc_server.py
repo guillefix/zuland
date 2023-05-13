@@ -18,6 +18,7 @@ class AIAgent:
         self.api_key = os.environ["OPENAI_API_KEY"]
         openai.api_key = self.api_key
         self.short_term_memory = 3 # number of recent interactions to keep in short term memory
+        self.max_retrieved_memories = 3
         self.memory_initialized = False
         self.conversation = []
         self.prompt = """
@@ -29,9 +30,9 @@ class AIAgent:
 
             You have a limited set of capabilities. They are listed below:
 
-            * Move (up, down, left, right)
+            * move (up, down, left, right)
             * Wait
-            * walkTo (Make sure you only talk to those who are nearby)
+            * walkTo (to either npcs or buildings)
             * talkTo (Make sure you only talk to those who are nearby)
 
             # Responses
@@ -64,8 +65,11 @@ class AIAgent:
 
             For now, this is the information you have access to:
 
-            Which NPC am I?
-            {npc}
+            What is my name?
+            {npc_name}
+
+            Who am I?
+            {npc_desc}
 
             Location:
             {location}
@@ -104,7 +108,7 @@ class AIAgent:
                 memories.append(self.conversation[i-1])
                 memories.append(mem)
 
-        return memories
+        return memories[:self.max_retrieved_memories]
 
     def add_memories(self, docs):
         if not self.memory_initialized:
@@ -124,6 +128,7 @@ class AIAgent:
             # print("awoo")
         else:
             memories = []
+        print("len(memories)", len(memories))
         response = self.chatgpt_with_retry(self.conversation[-self.short_term_memory*2:], memories)
         self.conversation.append({"role": "assistant", "content": response})
         N = len(self.conversation)
@@ -141,7 +146,7 @@ class AIAgent:
         messages_input.insert(0, prompt[0])
 
         completion = openai.ChatCompletion.create(
-            model="gpt-4",
+            model="gpt-3.5-turbo",
             temperature=temperature,
             frequency_penalty=frequency_penalty,
             presence_penalty=presence_penalty,
@@ -171,7 +176,8 @@ def get_chat_response():
     data = request.get_json()
 
     # populate with defaults if data missing
-    data["npc"] = data.get('npc', '')
+    data["npc_name"] = data.get('npc_name', '')
+    data["npc_desc"] = data.get('npc_desc', '')
     data["location"] = data.get('location', '')
     data["activity"] = data.get('activity', '')
     data["nearby_players"] = data.get('nearby_players', [])

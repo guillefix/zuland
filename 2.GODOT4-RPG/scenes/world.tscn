@@ -148,25 +148,8 @@ layer_1/y_sort_origin = 0
 layer_1/z_index = 0
 layer_1/tile_data = PackedInt32Array(327681, 655362, 7, 393221, 655362, 7, 524297, 655362, 7, 65544, 655362, 7, 131075, 524290, 6, 6, 524290, 6, 131081, 524290, 6, 458763, 2, 0, 196613, 2, 0, 327683, 2, 1, 327689, 2, 1, 196618, 2, 1, 131082, 2, 1)
 
-[node name="player" parent="." instance=ExtResource("4_drapj")]
-position = Vector2(29, 62)
-
 [node name="enemy" parent="." instance=ExtResource("5_56rj3")]
 position = Vector2(123, 66)
-
-[node name="Npc1" parent="." instance=ExtResource("6_w35qe")]
-position = Vector2(86, 241)
-
-[node name="Npc2" parent="." instance=ExtResource("6_w35qe")]
-position = Vector2(217, 178)
-
-[node name="Npc3" parent="." instance=ExtResource("6_w35qe")]
-position = Vector2(377, 265)
-
-[node name="Npc4" parent="." instance=ExtResource("6_w35qe")]
-position = Vector2(383, 91)
-collision_layer = 2
-collision_mask = 14
 
 [node name="LineEdit" type="LineEdit" parent="."]
 offset_left = 4.0
@@ -174,16 +157,37 @@ offset_top = 485.0
 offset_right = 286.0
 offset_bottom = 516.0
 
-[node name="Building1" parent="." instance=ExtResource("7_u6ga3")]
+[node name="Characters" type="Node" parent="."]
+
+[node name="player" parent="Characters" instance=ExtResource("4_drapj")]
+position = Vector2(29, 62)
+
+[node name="Npc1" parent="Characters" instance=ExtResource("6_w35qe")]
+position = Vector2(86, 241)
+
+[node name="Npc2" parent="Characters" instance=ExtResource("6_w35qe")]
+position = Vector2(217, 178)
+
+[node name="Npc3" parent="Characters" instance=ExtResource("6_w35qe")]
+position = Vector2(377, 265)
+
+[node name="Npc4" parent="Characters" instance=ExtResource("6_w35qe")]
+position = Vector2(383, 91)
+collision_layer = 2
+collision_mask = 14
+
+[node name="Buildings" type="Node" parent="."]
+
+[node name="Building1" parent="Buildings" instance=ExtResource("7_u6ga3")]
 position = Vector2(444, 211)
 
-[node name="Building2" parent="." instance=ExtResource("7_u6ga3")]
+[node name="Building2" parent="Buildings" instance=ExtResource("7_u6ga3")]
 position = Vector2(556, 406)
 
-[node name="Building3" parent="." instance=ExtResource("7_u6ga3")]
+[node name="Building3" parent="Buildings" instance=ExtResource("7_u6ga3")]
 position = Vector2(122, 394)
 
-[node name="Building4" parent="." instance=ExtResource("7_u6ga3")]
+[node name="Building4" parent="Buildings" instance=ExtResource("7_u6ga3")]
 position = Vector2(597, 82)
 
-[connection signal="text_submitted" from="LineEdit" to="player" method="_on_line_edit_text_submitted"]
+[connection signal="text_submitted" from="LineEdit" to="Characters/player" method="_on_line_edit_text_submitted"]

@@ -3,15 +3,8 @@ extends Area2D
 var httpRequest = HTTPRequest.new()
 var dialogue_box = null
 var json = JSON.new()
-var npc = null
-var npc2 = null
-var npc3 = null
-var npc4 = null
 var dialogue = null
 var is_conversation = true
-var npc_area = null
-var npc_area3 = null
-var npc_area4 = null
 var counter = 0
 var current_action = "idle"
 
@@ -25,13 +18,6 @@ func _ready():
 	add_child(httpRequest)
 	dialogue_box = get_node("../Dialogue")
 	httpRequest.request_completed.connect(_on_request_completed)
-	npc = get_node("/root/world/Npc")
-	npc2 = get_node("/root/world/Npc2")
-	npc3 = get_node("/root/world/Npc3")
-	npc4 = get_node("/root/world/Npc4")
-	npc_area = get_node("/root/world/Npc/Area2D")
-	npc_area3 = get_node("/root/world/Npc3/Area2D")	
-	npc_area4 = get_node("/root/world/Npc4/Area2D")	
 	dialogue = get_node("../Dialogue")
 
 
@@ -43,7 +29,8 @@ func send_request(user_input: String):
 	#function to check nearby NPCs
 	
 	var body = {
-		"npc": self.get_parent().name,
+		"npc_name": self.get_parent().name,
+		"npc_desc": self.get_parent().description,
 		"location": "park",
 		"activity": current_action,
 		"nearby_players": nearby_players,
@@ -72,17 +59,12 @@ func _on_request_completed(result, response_code, headers, body):
 	#var text = response["choices"][0]["text"].strip_edges()
 	print("RESPONSE", response)
 
-	#print("RESPONSE 1", response.action)
-	#print("RESPONSE 2", response.direction)
-	#print("RESPONSE 3", response.where)
-	var npc_names = ["Alice", "Bob", "Charlie","Shoopkeeper"]
-	var npc_codex = ["Npc", "Npc2", "Npc3", "Npc4"]
 	if response.action.type == "walkTo":
 		current_action = "walking"
-		var npc_name = response.action.where
-		print("walking to "+npc_name)
-		self.get_parent().walk_towards_npc(npc_name)
-		self.send_request("Just walked to "+npc_name)	
+		var location_name = response.action.where
+		print("walking to " + location_name)
+		self.get_parent().walk_towards(location_name)
+		self.send_request("Just walked to " + location_name)
 				
 	elif response.action.type == "wait":
 		print("WAITING")
@@ -96,22 +78,6 @@ func _on_request_completed(result, response_code, headers, body):
 	elif response.action.type == "talkTo":
 			self.get_parent().talk_to_npc(response.action.where, response.action.talking)
 	
-	
-	
-
-
-
-	
-	#use_dialogue()
-
-
-	#dialogue_box.change("Dan", response)
-	#if is_conversation:
-		#await get_tree().create_timer(5).timeout
-		#npc_area.respond_to_conversation(response)
-		#counter = counter + 1
-		#print("Counter ", counter)
-		#is_conversation = false
 
 func  _input(event):
 	if event.is_action_pressed("ui_accept") and len(get_overlapping_bodies()) > 0:
