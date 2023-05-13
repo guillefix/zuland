@@ -252,25 +252,25 @@ layer_1/tile_data = PackedInt32Array(327681, 655362, 7, 393221, 655362, 7, 52429
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="Panel5" type="Panel" parent="CanvasLayer"]
+[node name="npc1_panel" type="Panel" parent="CanvasLayer"]
 offset_left = 118.0
 offset_top = 285.0
 offset_right = 226.0
 offset_bottom = 357.0
 
-[node name="Panel6" type="Panel" parent="CanvasLayer"]
+[node name="npc2_panel" type="Panel" parent="CanvasLayer"]
 offset_left = 8.0
 offset_top = 285.0
 offset_right = 116.0
 offset_bottom = 357.0
 
-[node name="Panel4" type="Panel" parent="CanvasLayer"]
+[node name="npc4_panel" type="Panel" parent="CanvasLayer"]
 offset_left = 338.0
 offset_top = 285.0
 offset_right = 446.0
 offset_bottom = 357.0
 
-[node name="Panel3" type="Panel" parent="CanvasLayer"]
+[node name="npc3_panel" type="Panel" parent="CanvasLayer"]
 offset_left = 228.0
 offset_top = 285.0
 offset_right = 336.0
