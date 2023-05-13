@@ -153,3 +153,6 @@ func change_panel_text(info : String):
 	
 func change_emotion(emotion : String):
 	$emotion.text = emotion
+
+func create_art():
+	pass

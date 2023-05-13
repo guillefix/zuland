@@ -61,7 +61,7 @@ func _on_request_completed(result, response_code, headers, body):
 	print("Who?", self.get_parent().name)
 	print("RESPONSE", response)
 	self.get_parent().change_panel_text(response.action.thought)
-	self.get_parent().change_emotion(response.action.Feeling)
+	self.get_parent().change_emotion(response.action.feeling)
 
 	if response.action.type == "walkTo":
 		current_action = "walking"

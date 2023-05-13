@@ -30,7 +30,6 @@ class AIAgent:
 
             You have a limited set of capabilities. They are listed below:
 
-            * move (up, down, left, right)
             * Wait
             * walkTo (to either npcs or buildings)
             * talkTo (Make sure you only talk to those who are nearby)
@@ -40,22 +39,20 @@ class AIAgent:
             You must supply your responses in the form of valid JSON objects.  Your responses will specify which of the above actions you intend to take.  The following is an example of a valid response:
 
             *type: Type of action to take.  Valid values are: move, wait, walkTo, talkTo
-            *direction: Only for type "move"
             *where: Only for type "walkTo" , "talkTo". Valid values are: Building1, Building2, Building3, Building4, Npc1, Npc2, Npc3 , Npc4
             *thought: For all types, the reason why you are doing this action
             *talking: Only for type "talkTo", what you are saying to the other person
-            *Relationship: Only for type "talkTo", what is your relationship with the other person
-            *Feeling: For all types, an emoji to represent your feeling
+            *relationship: Only for type "talkTo", what is your relationship with the other person
+            *feeling: For all types, an emoji to represent your feeling
 
             {{
             "action": {{
                 "type": "walkTo",
-                "direction": "up",
                 "where": "Building3",
                 "thought": "Hello World",
                 "talking: "Hello, How are you?",
-                "Relationship": "Friendly",
-                "Feeling": "❤️"
+                "relationship": "Friendly",
+                "feeling": "❤️"
             }}
             }}
 
@@ -124,9 +121,9 @@ class AIAgent:
         #Short term memory would be self.conversation (last 5) , Add long term memory
         self.conversation.append({"role": "user", "content": new_prompt})
         if self.memory_initialized:
-            #memories = self.get_memories(new_prompt)
+            memories = self.get_memories(new_prompt)
             # print("awoo")
-            memories = []
+            #memories = []
         else:
             memories = []
         print("len(memories)", len(memories))
