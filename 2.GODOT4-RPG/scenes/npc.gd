@@ -43,7 +43,7 @@ func _ready():
 	#Create a mapping between "npcs" and "prompts"
 #	var initial_prompt = map[self.name]
 
-	area.send_request("start game")
+	#area.send_request("start game")
 	$walk_timer.start()  # start the timer
 	locations = {}
 	for npc in npcs:

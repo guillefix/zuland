@@ -18,8 +18,10 @@ config/icon="res://icon.svg"
 [display]
 
 window/size/viewport_width=1360
-window/size/viewport_height=920
-window/stretch/scale=2.0
+window/size/viewport_height=1080
+window/size/resizable=false
+window/stretch/mode="viewport"
+window/stretch/scale=3.0
 
 [dotnet]
 
