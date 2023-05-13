@@ -14,6 +14,7 @@ var close_npcs = []
 #var NPC = preload("res://scenes/npc.gd").new()  # preload NPC script
 
 
+
 func _ready():
 	add_child(httpRequest)
 	dialogue_box = get_node("../Dialogue")
@@ -57,7 +58,10 @@ func _on_request_completed(result, response_code, headers, body):
 	#var json = JSON.parse_string(body.get_string_from_utf8()
 	var response = JSON.parse_string(str_to_var(body.get_string_from_utf8()))
 	#var text = response["choices"][0]["text"].strip_edges()
+	print("Who?", self.get_parent().name)
 	print("RESPONSE", response)
+	self.get_parent().change_panel_text(response.action.thought)
+	self.get_parent().change_emotion(response.action.Feeling)
 
 	if response.action.type == "walkTo":
 		current_action = "walking"
@@ -77,32 +81,21 @@ func _on_request_completed(result, response_code, headers, body):
 			
 	elif response.action.type == "talkTo":
 			self.get_parent().talk_to_npc(response.action.where, response.action.talking)
+			self.send_request("Just talked to" + response.action.where + " about response.action.talking")
 	
 
 func  _input(event):
 	if event.is_action_pressed("ui_accept") and len(get_overlapping_bodies()) > 0:
 		#use_dialogue()
 		pass
-
-func use_dialogue():
-	if dialogue:
-		dialogue.start("Dan")
-
-func _on_body_exited(body):
-	if body.name == "player":
-		dialogue_box.hide_box()		
-	#if body.get_script() == NPC:  # check if the body is an instance of NPC, replace NPC with your NPC class
-
 		
 
 func start_conversation(from_npc: String, prompt :String):
 	print("start conversation with prompt: ", prompt)
-	dialogue.start("Dan")
 	send_request(from_npc + " said: " + prompt)	
 		
 func respond_to_conversation(prompt :String):
 	print("start conversation with prompt: ", prompt)
-	dialogue.start("Dan")
 	send_request(prompt)
 	#if is_conversation:
 		#npc_area.start_conversation(prompt)

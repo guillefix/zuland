@@ -27,6 +27,8 @@ var locations = {}
 var location = null
 var description = ""
 
+var panel = null
+
 
 func _ready():
 	add_child(httpRequest)
@@ -36,6 +38,8 @@ func _ready():
 
 	buildings = get_node("/root/world/Buildings").get_children()
 	area = $action_area
+	panel = $Panel
+	panel.visible = false
 	#Create a mapping between "npcs" and "prompts"
 #	var initial_prompt = map[self.name]
 
@@ -142,3 +146,10 @@ func npc_movement(dir):
 		velocity.x = 0
 		velocity.y = 0
 	move_and_slide()
+	
+func change_panel_text(info : String):
+	panel.visible = true
+	panel.get_node("panel_text").text = info
+	
+func change_emotion(emotion : String):
+	$emotion.text = emotion
