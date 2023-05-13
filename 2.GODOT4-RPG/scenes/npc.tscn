@@ -431,8 +431,6 @@ script = ExtResource("1_sbtr7")
 metadata/description = &""
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-light_mask = 31
-visibility_layer = 31
 position = Vector2(28, 15)
 shape = SubResource("CircleShape2D_b8576")
 
