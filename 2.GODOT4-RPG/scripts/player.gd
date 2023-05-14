@@ -15,11 +15,11 @@ func _on_http_request_request_completed(result, response_code, headers, body):
 
 func _ready():
 	$AnimatedSprite2D.play("front_idle")
-	var inputLine = get_node("/root/world/LineEdit")  # replace "World" with the actual path to the LineEdit node
-	print(inputLine)  # print the LineEdit node
-	print(inputLine.get_class())  # print the class of the LineEdit node
-	inputLine.text_submitted.connect(_on_text_entered)  # Use text_submitted signal instead
-	print(inputLine)
+	#var inputLine = get_node("/root/world/LineEdit")  # replace "World" with the actual path to the LineEdit node
+	#print(inputLine)  # print the LineEdit node
+	#print(inputLine.get_class())  # print the class of the LineEdit node
+	#inputLine.text_submitted.connect(_on_text_entered)  # Use text_submitted signal instead
+	#print(inputLine)
 
 
 func _physics_process(delta):

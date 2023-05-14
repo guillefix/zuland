@@ -30,7 +30,6 @@ class AIAgent:
 
             You have a limited set of capabilities. They are listed below:
 
-            * move (up, down, left, right)
             * Wait
             * walkTo (to either npcs or buildings)
             * talkTo (Make sure you only talk to those who are nearby)
@@ -40,22 +39,20 @@ class AIAgent:
             You must supply your responses in the form of valid JSON objects.  Your responses will specify which of the above actions you intend to take.  The following is an example of a valid response:
 
             *type: Type of action to take.  Valid values are: move, wait, walkTo, talkTo
-            *direction: Only for type "move"
-            *where: Only for type "walkTo" , "talkTo". Valid values are: Building1, Building2, Building3, Building4, Npc1, Npc2, Npc3 , Npc4
+            *where: Only for type "walkTo" , "talkTo". Valid values are(dont respond with any other value): dome, lighthouse, ethereum_state1, ethereum_state2, honky_ai, meow_meow_singer, longevity_vampire , network_fisherman, vvzalik
             *thought: For all types, the reason why you are doing this action
             *talking: Only for type "talkTo", what you are saying to the other person
-            *Relationship: Only for type "talkTo", what is your relationship with the other person
-            *Feeling: For all types, an emoji to represent your feeling
+            *relationship: Only for type "talkTo", what is your relationship with the other person
+            *feeling: For all types, an emoji to represent your feeling
 
             {{
             "action": {{
                 "type": "walkTo",
-                "direction": "up",
-                "where": "Building3",
+                "where": "dome",
                 "thought": "Hello World",
                 "talking: "Hello, How are you?",
-                "Relationship": "Friendly",
-                "Feeling": "❤️"
+                "relationship": "Friendly",
+                "feeling": "❤️"
             }}
             }}
 
@@ -132,12 +129,12 @@ class AIAgent:
         print("len(memories)", len(memories))
         response = self.chatgpt_with_retry(self.conversation[-self.short_term_memory*2:], memories)
         self.conversation.append({"role": "assistant", "content": response})
-        N = len(self.conversation)
-        if new_prompt is not None and response is not None:
-            self.add_memories([
-                Document(page_content=self.conversation[-1]["content"], metadata={"index": N-1}),
-                Document(page_content=self.conversation[-2]["content"], metadata={"index": N-2})
-            ])
+        # N = len(self.conversation)
+        # if new_prompt is not None and response is not None:
+        #     self.add_memories([
+        #         Document(page_content=self.conversation[-1]["content"], metadata={"index": N-1}),
+        #         Document(page_content=self.conversation[-2]["content"], metadata={"index": N-2})
+        #     ])
         return response
 
     def chatgpt(self, conversation, memories, temperature=0.75, frequency_penalty=0.2, presence_penalty=0):
@@ -147,7 +144,7 @@ class AIAgent:
         messages_input.insert(0, prompt[0])
 
         completion = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",
+            model="gpt-4",
             temperature=temperature,
             frequency_penalty=frequency_penalty,
             presence_penalty=presence_penalty,
@@ -195,7 +192,7 @@ def get_chat_response():
     response = chatbot.interact(data)
     # action = extract_action_from_response(response)  # You'd need to implement this function
     #print("Response: "+ response)
-    # print(jsonify(response).action)
+    print(response)
     return jsonify(response)
 
 

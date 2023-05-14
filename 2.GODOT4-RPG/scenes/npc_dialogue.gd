@@ -61,7 +61,8 @@ func _on_request_completed(result, response_code, headers, body):
 	print("Who?", self.get_parent().name)
 	print("RESPONSE", response)
 	self.get_parent().change_panel_text(response.action.thought)
-	self.get_parent().change_emotion(response.action.Feeling)
+	self.get_parent().change_emotion(response.action.feeling)
+	#self.get_node("/root/world/info_box").get_node(self.get_parent().name).get_node("thought").text = response.action.thought
 
 	if response.action.type == "walkTo":
 		current_action = "walking"
@@ -82,6 +83,8 @@ func _on_request_completed(result, response_code, headers, body):
 	elif response.action.type == "talkTo":
 			self.get_parent().talk_to_npc(response.action.where, response.action.talking)
 			self.send_request("Just talked to" + response.action.where + " about response.action.talking")
+			
+			
 	
 
 func  _input(event):
