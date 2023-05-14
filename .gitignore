@@ -1,2 +1,6 @@
 zuzagent/config.py
 *.pyc
+*.import
+**/*.import
+2.GODOT4-RPG/addons/GPTIntegration/settings.json
+
