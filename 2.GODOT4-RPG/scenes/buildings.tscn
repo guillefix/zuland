@@ -1,13 +1,13 @@
 [gd_scene load_steps=2 format=3 uid="uid://dodmkmlg7jmh6"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_nn6au"]
-radius = 40.5854
+radius = 53.0992
 
 [node name="StaticBody2D" type="StaticBody2D"]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 light_mask = 3
 visibility_layer = 3
-position = Vector2(2, -2.38419e-07)
+position = Vector2(-1, 0)
 scale = Vector2(0.640625, 0.601449)
 shape = SubResource("CircleShape2D_nn6au")

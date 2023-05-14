@@ -35,15 +35,22 @@ func _ready():
 	dialogue_box = get_node("Dialogue")
 #	enemy = get_node("/root/world/enemy")
 	npcs = get_node("/root/world/Characters").get_children()
-
 	buildings = get_node("/root/world/Buildings").get_children()
 	area = $action_area
 	panel = $Panel
-	panel.visible = false
+	#panel.visible = false
 	#Create a mapping between "npcs" and "prompts"
-#	var initial_prompt = map[self.name]
+	var initial_prompt = "start game"
+	
+	if has_meta("initial_prompt"):
+		initial_prompt = get_meta("initial_prompt")
+		print(initial_prompt)
+	else:
+		print("No description metadata found")
+	
+	panel.get_node("panel_text").text = initial_prompt
 
-	area.send_request("start game")
+	area.send_request(initial_prompt)
 	$walk_timer.start()  # start the timer
 	locations = {}
 	for npc in npcs:
@@ -105,14 +112,14 @@ func talk_to_npc(to_npc_name, message):
 func _on_detection_area_body_entered(body):
 	if body.name != self.name:
 		close_npc_list.append(body.name)
-		print(close_npc_list)
+		#print(close_npc_list)
 	
 
 
 func _on_detection_area_body_exited(body):
 	if body.name != self.name:
 		close_npc_list.erase(body.name)
-		print(close_npc_list)
+		#print(close_npc_list)
 		
 func npc_movement(dir):
 	print("Moving direction: ", dir)

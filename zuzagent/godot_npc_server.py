@@ -39,7 +39,7 @@ class AIAgent:
             You must supply your responses in the form of valid JSON objects.  Your responses will specify which of the above actions you intend to take.  The following is an example of a valid response:
 
             *type: Type of action to take.  Valid values are: move, wait, walkTo, talkTo
-            *where: Only for type "walkTo" , "talkTo". Valid values are: Building1, Building2, Building3, Building4, Npc1, Npc2, Npc3 , Npc4
+            *where: Only for type "walkTo" , "talkTo". Valid values are(dont respond with any other value): dome, lighthouse, ethereum_state1, ethereum_state2, honky_ai, meow_meow_singer, longevity_vampire , network_fisherman, vvzalik
             *thought: For all types, the reason why you are doing this action
             *talking: Only for type "talkTo", what you are saying to the other person
             *relationship: Only for type "talkTo", what is your relationship with the other person
@@ -48,7 +48,7 @@ class AIAgent:
             {{
             "action": {{
                 "type": "walkTo",
-                "where": "Building3",
+                "where": "dome",
                 "thought": "Hello World",
                 "talking: "Hello, How are you?",
                 "relationship": "Friendly",
@@ -121,20 +121,20 @@ class AIAgent:
         #Short term memory would be self.conversation (last 5) , Add long term memory
         self.conversation.append({"role": "user", "content": new_prompt})
         if self.memory_initialized:
-            memories = self.get_memories(new_prompt)
+            #memories = self.get_memories(new_prompt)
             # print("awoo")
-            #memories = []
+            memories = []
         else:
             memories = []
         print("len(memories)", len(memories))
         response = self.chatgpt_with_retry(self.conversation[-self.short_term_memory*2:], memories)
         self.conversation.append({"role": "assistant", "content": response})
-        N = len(self.conversation)
-        if new_prompt is not None and response is not None:
-            self.add_memories([
-                Document(page_content=self.conversation[-1]["content"], metadata={"index": N-1}),
-                Document(page_content=self.conversation[-2]["content"], metadata={"index": N-2})
-            ])
+        # N = len(self.conversation)
+        # if new_prompt is not None and response is not None:
+        #     self.add_memories([
+        #         Document(page_content=self.conversation[-1]["content"], metadata={"index": N-1}),
+        #         Document(page_content=self.conversation[-2]["content"], metadata={"index": N-2})
+        #     ])
         return response
 
     def chatgpt(self, conversation, memories, temperature=0.75, frequency_penalty=0.2, presence_penalty=0):
