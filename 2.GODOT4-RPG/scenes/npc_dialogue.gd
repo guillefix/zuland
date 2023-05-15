@@ -20,6 +20,7 @@ func _ready():
 	dialogue_box = get_node("../Dialogue")
 	httpRequest.request_completed.connect(_on_request_completed)
 	dialogue = get_node("../Dialogue")
+#	generate_image(self.get_parent().description)		
 
 
 func send_request(user_input: String):
@@ -49,6 +50,18 @@ func send_request(user_input: String):
 	else:
 		httpRequest.request("http://127.0.0.1:5000/chat", headers, HTTPClient.METHOD_POST, body_text)
 
+func generate_image(prompt: String):
+	var headers = ["Content-Type: application/json"]
+	print("generate image action requested")
+	
+	#function to check nearby NPCs
+	
+	var body = {
+		"prompt": prompt
+	}
+	var body_text = JSON.stringify(body)  # use JSON.print() to convert dict to JSON string
+	httpRequest.request("http://127.0.0.1:5000/t2i", headers, HTTPClient.METHOD_POST, body_text)
+
 	
 	# Send the request
 
@@ -56,7 +69,31 @@ func send_request(user_input: String):
 func _on_request_completed(result, response_code, headers, body):
 	#If Nill or null just wait*
 	#var json = JSON.parse_string(body.get_string_from_utf8()
-	var response = JSON.parse_string(str_to_var(body.get_string_from_utf8()))
+	var res = str_to_var(body.get_string_from_utf8())
+	if res == null:
+		self.send_request("did nothing")
+		return
+	if "generated_img" in res:
+#		var preview : Texture = load(res["generated_img"])
+#		self.get_parent().get_node("TextureRect").texture = load("res://generated/"+res["generated_img"])
+		var img = Image.new()
+		img.load("res://generated/"+res["generated_img"])
+		var tex = ImageTexture.create_from_image(img)
+#		if ResourceLoader.exists("res://generated/" + res["generated_img"]):
+#		if FileAccess.file_exists("res://generated/" + res["generated_img"]):
+#			print("File exists")
+#		else:
+#			print("File not found")
+#		var tex = ResourceLoader.load("res://generated/" + res["generated_img"])
+		self.get_parent().get_node("TextureRect").texture = tex		
+#		self.get_parent().get_node("TextureRect").texture = load("res://generated/"+"v1_txt2img_bf4a3e3d-f260-11ed-a978-d03c1f36e4ac.png")		
+		self.get_parent().get_node("TextureRect").set_scale(Vector2(0.1,0.1))
+#		self.get_parent().get_node("TextureRect").texture = load("res://generated/"+"v1_txt2img_bf4a3e3d-f260-11ed-a978-d03c1f36e4ac.png")
+		print("loaded "+"res://generated/"+res["generated_img"])
+		self.send_request("Just generated image")
+		return
+	var response = JSON.parse_string(res)	
+	
 	#var text = response["choices"][0]["text"].strip_edges()
 	print("Who?", self.get_parent().name)
 	print("RESPONSE", response)
@@ -97,9 +134,9 @@ func start_conversation(from_npc: String, prompt :String):
 	print("start conversation with prompt: ", prompt)
 	send_request(from_npc + " said: " + prompt)	
 		
-func respond_to_conversation(prompt :String):
-	print("start conversation with prompt: ", prompt)
-	send_request(prompt)
+#func respond_to_conversation(prompt :String):
+#	print("start conversation with prompt: ", prompt)
+#	send_request(prompt)
 	#if is_conversation:
 		#npc_area.start_conversation(prompt)
 		#is_conversation = false		

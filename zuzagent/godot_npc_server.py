@@ -195,6 +195,65 @@ def get_chat_response():
     print(response)
     return jsonify(response)
 
+import base64
+import os
+import requests
+
+engine_id = "stable-diffusion-v1-5"
+api_host = os.getenv('API_HOST', 'https://api.stability.ai')
+api_key = config.STABILITY_API_KEY
+
+if api_key is None:
+    raise Exception("Missing Stability API key.")
+
+import uuid
+
+@app.route('/t2i', methods=['POST'])
+def generate_image():
+    data = request.get_json()
+
+    # populate with defaults if data missing
+    prompt = data.get('prompt', 'A cool image')
+    if prompt == "":
+        prompt = "A cool image"
+
+    response = requests.post(
+        f"{api_host}/v1/generation/{engine_id}/text-to-image",
+        headers={
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "Authorization": f"Bearer {api_key}"
+        },
+        json={
+            "text_prompts": [
+                {
+                    "text": prompt
+                }
+            ],
+            "cfg_scale": 7,
+            "clip_guidance_preset": "FAST_BLUE",
+            "height": 512,
+            "width": 512,
+            "samples": 1,
+            "steps": 15,
+        },
+    )
+    if response.status_code != 200:
+        raise Exception("Non-200 response: " + str(response.text))
+
+    data = response.json()
+    # for i, image in enumerate(data["artifacts"]):
+    image = data["artifacts"][0]
+    filename = f"v1_txt2img_{str(uuid.uuid1())}.png"
+    path = f"./../2.GODOT4-RPG/generated/" + filename
+    with open(path, "wb") as f:
+        f.write(base64.b64decode(image["base64"]))
+
+    response = {"generated_img":filename}
+    print(response)
+    return response
+
+
 
 if __name__ == '__main__':
     app.run(port=5000, debug=True)
